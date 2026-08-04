@@ -20,8 +20,10 @@ question that matters when a group project's contribution is disputed.
 Coauthor answers it from two independent sources, stores them in SQLite, and
 serves a dashboard that is careful never to claim more than it actually knows.
 
-<!-- Replace with your recording -->
-![Dashboard](docs/demo.gif)
+![Dashboard](docs/demo.png)
+
+<sub>Two collaborators present, tracked live. The short loop is in
+[docs/demo.gif](docs/demo.gif).</sub>
 
 ---
 
