@@ -29,6 +29,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 
+from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
@@ -75,11 +76,29 @@ def get_credentials(cfg):
     if os.path.exists(token_path):
         creds = Credentials.from_authorized_user_file(token_path, SCOPES)
     if not creds or not creds.valid:
+        refreshed = False
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
+            try:
+                creds.refresh(Request())
+                refreshed = True
+            except RefreshError as e:
+                # Expired is recoverable by refreshing; revoked is not. Google
+                # returns invalid_grant for both, and the docstring above is the
+                # reason this happens on a schedule -- a Testing-status OAuth app
+                # has its refresh tokens killed after 7 days. Falling through to
+                # a new sign-in beats exiting on a traceback.
+                print(f"stored credentials rejected ({e}); re-authenticating",
+                      file=sys.stderr)
+        if not refreshed:
             if not os.path.exists(client_path):
                 sys.exit(f"Missing {client_path}. See README step 3.")
+            if not sys.stdin.isatty() and not os.environ.get("DISPLAY"):
+                sys.exit(
+                    "Google sign-in has expired and this machine cannot open a "
+                    "browser to renew it.\nRun activity_poller.py once on a "
+                    "desktop to refresh token.json, then redeploy it -- or "
+                    "switch to a service account, which does not expire."
+                )
             flow = InstalledAppFlow.from_client_secrets_file(client_path, SCOPES)
             creds = flow.run_local_server(port=0)
         with open(token_path, "w") as f:
