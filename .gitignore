@@ -1,0 +1,47 @@
+# ---------------------------------------------------------------------------
+# Credentials. Everything here can impersonate the tracking account.
+# chrome-profile/ in particular holds live Google session cookies.
+# ---------------------------------------------------------------------------
+chrome-profile/
+client_secret.json
+client_secret_*.json
+token.json
+service_account.json
+*.pem
+.env
+coauthor.env
+
+# ---------------------------------------------------------------------------
+# Collected data. Contains named people and their timestamps.
+# ---------------------------------------------------------------------------
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+report.html
+timeline.csv
+
+# Local settings, including the document id
+config.json
+people_map.json
+
+# ---------------------------------------------------------------------------
+# Terraform. tfstate records the public IP and bucket names, and can contain
+# sensitive values in plain text.
+# ---------------------------------------------------------------------------
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+*.egg-info/

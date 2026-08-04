@@ -1,0 +1,26 @@
+{
+  "doc_id": "PUT_THE_ID_FROM_THE_DOC_URL_HERE",
+  "db_path": "coauthor.sqlite3",
+  "tz_offset_hours": -4,
+  "profile_dir": "chrome-profile",
+  "headless": false,
+  "poll_interval_ms": 3000,
+  "reload_minutes": 30,
+  "viewport": {
+    "width": 1680,
+    "height": 1000
+  },
+  "extra_selectors": [],
+  "client_secret_path": "client_secret.json",
+  "token_path": "token.json",
+  "service_account_path": null,
+  "people_map_path": "people_map.json",
+  "poll_minutes": 5,
+  "activity_lookback_days": 60,
+  "timezone": "America/Toronto",
+  "doc_title": "Group Document",
+  "web_host": "127.0.0.1",
+  "web_port": 8000,
+  "watcher_stale_minutes": 15,
+  "leave_grace_seconds": 8
+}

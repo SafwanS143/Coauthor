@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in &middot; Coauthor</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #14161a;
+    --muted: #6b7280;
+    --line: #e4e7ec;
+    --accent: #2563eb;
+    --err: #b42318;
+    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d0f13; --card: #16191f; --text: #e8eaed; --muted: #98a2b3;
+      --line: #262b33; --accent: #5b8cff; --err: #ff8a80;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+    }
+  }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    background: var(--bg); color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    width: 100%; max-width: 380px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 32px; box-shadow: var(--shadow);
+  }
+  .mark {
+    width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+    background: var(--accent); color: #fff; font-weight: 650; font-size: 18px;
+    margin-bottom: 18px; letter-spacing: -.02em;
+  }
+  h1 { margin: 0 0 6px; font-size: 20px; font-weight: 640; letter-spacing: -.02em; }
+  p.sub { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
+  label { display: block; font-size: 13px; font-weight: 560; margin-bottom: 7px; }
+  input {
+    width: 100%; padding: 11px 13px; font-size: 15px; font-family: inherit;
+    border: 1px solid var(--line); border-radius: 9px;
+    background: var(--bg); color: var(--text); transition: border-color .12s, box-shadow .12s;
+  }
+  input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  button {
+    width: 100%; margin-top: 16px; padding: 11px; font-size: 15px; font-weight: 580;
+    font-family: inherit; color: #fff; background: var(--accent);
+    border: 0; border-radius: 9px; cursor: pointer; transition: filter .12s;
+  }
+  button:hover { filter: brightness(1.08); }
+  .err {
+    margin: 0 0 16px; padding: 10px 12px; font-size: 13.5px; border-radius: 8px;
+    color: var(--err); background: color-mix(in srgb, var(--err) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--err) 25%, transparent);
+  }
+  .foot { margin: 20px 0 0; font-size: 12.5px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="mark">C</div>
+    <h1>Coauthor</h1>
+    <p class="sub">Enter the shared password to view document activity.</p>
+    <!--ERROR-->
+    <form method="post" action="/login">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password"
+             autofocus required>
+      <button type="submit">View dashboard</button>
+    </form>
+    <p class="foot">Everyone with the link uses the same password.</p>
+  </main>
+</body>
+</html>

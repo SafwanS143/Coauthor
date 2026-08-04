@@ -1,0 +1,8 @@
+playwright>=1.44
+google-api-python-client>=2.120
+google-auth-oauthlib>=1.2
+google-auth>=2.29
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+tzdata>=2024.1 ; sys_platform == "win32"

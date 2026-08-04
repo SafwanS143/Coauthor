@@ -1,0 +1,25 @@
+{
+  "//": "Four kinds of entry. All optional; delete what you do not need.",
+
+  "//1": "Resolve a Drive Activity actor id to a real name. Note the people/ prefix.",
+  "people/104938271650192837465": "Alice Chen",
+
+  "//2": "Merge two names that are the same human. Drive reports the account's",
+  "//2b": "display name; the presence chip reports the collaborator name. They differ.",
+  "__aliases__": {
+    "achen": "Alice Chen",
+    "marcus.bell": "Marcus Bell"
+  },
+
+  "//3": "Drop someone from the report entirely -- typically the tracking account,",
+  "//3b": "which appears as a collaborator like anyone else but is not a participant.",
+  "__hidden__": [
+    "Coauthor Watcher"
+  ],
+
+  "//4": "Shorthand: mapping any name to null hides it, same as listing it above.",
+  "Anonymous Falcon": null,
+
+  "//5": "Used by the poller to label its own account. Not a display alias.",
+  "__self__": "Coauthor Watcher"
+}

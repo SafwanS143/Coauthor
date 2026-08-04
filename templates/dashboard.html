@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Coauthor &middot; Document activity</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #14161a;
+    --muted: #6b7280;
+    --faint: #9aa2ae;
+    --line: #e4e7ec;
+    --accent: #2563eb;
+    --live: #12a150;
+    --warn: #b54708;
+    --warn-bg: #fff8ef;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.06);
+    --radius: 13px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d0f13; --card: #16191f; --text: #e8eaed; --muted: #98a2b3;
+      --faint: #6b7480; --line: #262b33; --accent: #5b8cff; --live: #3ddc84;
+      --warn: #fdb022; --warn-bg: #241c0d;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 22px 20px 72px; }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex; align-items: center; gap: 13px; flex-wrap: wrap;
+    padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--line);
+  }
+  .mark {
+    width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+    background: var(--accent); color: #fff; font-weight: 650; font-size: 15px; flex: none;
+  }
+  .htitle { flex: 1 1 220px; min-width: 0; }
+  .htitle h1 {
+    margin: 0; font-size: 17px; font-weight: 640; letter-spacing: -.02em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .htitle a { color: var(--muted); font-size: 13px; text-decoration: none; }
+  .htitle a:hover { color: var(--accent); text-decoration: underline; }
+  .spacer { flex: 1; }
+  .btn {
+    font: inherit; font-size: 13.5px; font-weight: 540; padding: 7px 13px;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+    color: var(--text); cursor: pointer; text-decoration: none; display: inline-block;
+    transition: border-color .12s, color .12s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- status pill ---------- */
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 550;
+    padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--card); white-space: nowrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); flex: none; }
+  .pill.ok .dot { background: var(--live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 22%, transparent); }
+  .pill.ok { color: var(--live); border-color: color-mix(in srgb, var(--live) 35%, var(--line)); }
+  .pill.down .dot { background: var(--warn); }
+  .pill.down { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, var(--line)); }
+  @keyframes breathe { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
+  .pill.ok .dot { animation: breathe 2.4s ease-in-out infinite; }
+
+  /* ---------- notice ---------- */
+  .notice {
+    display: flex; gap: 11px; align-items: flex-start;
+    background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+    border-radius: var(--radius); padding: 14px 16px; margin-bottom: 22px; font-size: 14px;
+  }
+  .notice b { display: block; margin-bottom: 2px; color: var(--warn); }
+  .notice p { margin: 0; color: var(--muted); }
+  .notice code {
+    font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--card); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px;
+  }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 28px; }
+  h2 {
+    font-size: 12px; font-weight: 620; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--muted); margin: 0 0 12px;
+  }
+
+  /* ---------- right now ---------- */
+  .now { display: flex; gap: 11px; flex-wrap: wrap; }
+  .who {
+    display: flex; align-items: center; gap: 11px; background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 17px 12px 13px;
+    box-shadow: var(--shadow);
+  }
+  .who .av {
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 620; font-size: 14px; flex: none;
+  }
+  .who .nm { font-weight: 570; font-size: 14.5px; }
+  .who .sub { font-size: 12.5px; color: var(--muted); }
+  .empty {
+    background: var(--card); border: 1px dashed var(--line); border-radius: var(--radius);
+    padding: 22px; text-align: center; color: var(--muted); font-size: 14px;
+  }
+
+  /* ---------- stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .stat {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 15px 17px; box-shadow: var(--shadow);
+  }
+  .stat .k { font-size: 12.5px; color: var(--muted); margin-bottom: 5px; }
+  .stat .v {
+    font-size: 25px; font-weight: 650; letter-spacing: -.025em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- table ---------- */
+  .tablecard {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 660px; }
+  th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--line); }
+  th {
+    font-size: 11.5px; font-weight: 620; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); background: color-mix(in srgb, var(--bg) 55%, var(--card));
+    white-space: nowrap; position: relative; cursor: help;
+  }
+  th[data-tip]:hover::after {
+    content: attr(data-tip); position: absolute; left: 12px; top: calc(100% + 6px); z-index: 10;
+    width: 220px; padding: 9px 11px; border-radius: 8px; text-transform: none;
+    letter-spacing: 0; font-size: 12.5px; font-weight: 450; line-height: 1.45;
+    background: var(--text); color: var(--card); box-shadow: 0 6px 20px rgba(0,0,0,.22);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .person { display: flex; align-items: center; gap: 10px; }
+  .person .av {
+    width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 620; font-size: 11.5px; flex: none;
+  }
+  .person .nm { font-weight: 540; }
+  .person .em { font-size: 12px; color: var(--muted); }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 620; padding: 2px 7px;
+    border-radius: 999px; color: var(--live);
+    background: color-mix(in srgb, var(--live) 13%, transparent); margin-left: 6px;
+  }
+  .bar { height: 5px; border-radius: 3px; background: var(--line); margin-top: 5px; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 3px; }
+
+  /* ---------- timeline ---------- */
+  .tl { padding: 16px; }
+  .tlrow { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+  .tlname {
+    width: 128px; flex: none; font-size: 13px; text-align: right; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .track {
+    flex: 1; position: relative; height: 20px; background: var(--bg);
+    border-radius: 5px; overflow: hidden;
+  }
+  .span { position: absolute; top: 3px; height: 14px; border-radius: 3px; min-width: 2px; }
+  .span.present { opacity: .3; }
+  .axis {
+    display: flex; justify-content: space-between; font-size: 11.5px; color: var(--faint);
+    margin: 10px 0 0 140px; font-variant-numeric: tabular-nums;
+  }
+  .legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); margin: 14px 0 0 140px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { display: inline-block; width: 22px; height: 9px; border-radius: 3px; background: var(--accent); }
+  .sw.p { opacity: .3; }
+
+  /* ---------- activity log ---------- */
+  .log { padding: 6px 0; max-height: 460px; overflow-y: auto; }
+  .daysep {
+    position: sticky; top: 0; z-index: 2; padding: 8px 17px;
+    font-size: 11.5px; font-weight: 620; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--muted); background: color-mix(in srgb, var(--bg) 82%, var(--card));
+    border-bottom: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .entry {
+    display: flex; align-items: center; gap: 12px; padding: 10px 17px;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  }
+  .entry:last-child { border-bottom: 0; }
+  .entry .av {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 620; font-size: 11px; flex: none;
+  }
+  .entry .icon {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    flex: none; font-size: 13px; background: var(--bg); border: 1px solid var(--line);
+  }
+  .entry .msg { flex: 1; min-width: 0; font-size: 14px; }
+  .entry .msg b { font-weight: 600; }
+  .entry .when {
+    flex: none; text-align: right; font-size: 12.5px; color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .entry .when small { display: block; font-size: 11.5px; color: var(--faint); }
+  .entry.sys .msg { color: var(--muted); }
+  .arrow-in  { color: var(--live); font-weight: 700; }
+  .arrow-out { color: var(--faint); font-weight: 700; }
+  .arrow-idle { opacity: .75; }
+  .entry.idle .msg { color: var(--muted); }
+  .hint { color: var(--faint); font-size: 12.5px; margin-left: 6px; }
+
+  /* ---------- explainer ---------- */
+  details {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 15px 18px; box-shadow: var(--shadow);
+  }
+  summary { cursor: pointer; font-weight: 570; font-size: 14.5px; }
+  summary::marker { color: var(--muted); }
+  details dl { margin: 15px 0 0; }
+  details dt { font-weight: 600; font-size: 14px; margin-top: 13px; }
+  details dt:first-child { margin-top: 0; }
+  details dd { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+
+  footer {
+    margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-size: 12.5px; color: var(--faint);
+  }
+  @media (max-width: 620px) {
+    .tlname { width: 78px; font-size: 12px; }
+    .axis, .legend { margin-left: 90px; }
+    .stat .v { font-size: 21px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark">C</div>
+    <div class="htitle">
+      <h1 id="doctitle">Loading&hellip;</h1>
+      <a id="doclink" href="#" target="_blank" rel="noopener">Open the document &rarr;</a>
+    </div>
+    <div class="spacer"></div>
+    <span class="pill" id="status"><span class="dot"></span><span id="statustext">Connecting</span></span>
+    <a class="btn" href="/api/export.csv">Download CSV</a>
+    <form method="post" action="/logout" style="margin:0"><button class="btn" type="submit">Sign out</button></form>
+  </header>
+
+  <div id="notice"></div>
+
+  <section>
+    <h2>In the document right now</h2>
+    <div class="now" id="now"></div>
+  </section>
+
+  <section>
+    <h2>Overall</h2>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section>
+    <h2>Per person</h2>
+    <div class="tablecard scroll">
+      <table>
+        <thead><tr>
+          <th>Person</th>
+          <th data-tip="Wall-clock time their browser was connected to the document. A tab left open overnight counts, so treat this as the weakest number.">Time open</th>
+          <th data-tip="Roughly how long they spent moving the text cursor around — typing, clicking, selecting. Each burst of movement is credited about half a minute. Scrolling and silent reading move nothing, so this under-counts someone who mostly reads. Treat it as a floor, not a total.">Actively working</th>
+          <th data-tip="How many separate times they opened the document.">Visits</th>
+          <th data-tip="Changes Google itself recorded against their name. This is Google's own record rather than ours, so it is the hardest number to argue with.">Edits</th>
+          <th data-tip="The most recent moment we saw them, either present in the document or editing it.">Last seen</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Timeline</h2>
+    <div class="tablecard"><div class="tl" id="timeline"></div></div>
+  </section>
+
+  <section>
+    <h2>Activity log</h2>
+    <div class="tablecard"><div class="log" id="log"></div></div>
+  </section>
+
+  <section>
+    <details>
+      <summary>What do these numbers actually mean?</summary>
+      <dl>
+        <dt>Time open</dt>
+        <dd>How long the document was open in their browser. Someone can leave a tab
+            open and walk away, so a large number here on its own does not prove much.</dd>
+        <dt>Actively working</dt>
+        <dd>How long they spent moving the text cursor — typing, clicking, selecting.
+            Every burst of movement earns about half a minute, so the figure is built
+            from moments of activity rather than measured continuously. Scrolling and
+            reading without touching anything move no cursor and earn nothing, which
+            means a careful reader can show very little here. Read it as a lower bound
+            on involvement, never as a total.</dd>
+        <dt>Edits</dt>
+        <dd>Changes Google attributed to them in the document's own revision history.
+            We do not calculate these, we only read them back, which is what makes them
+            persuasive if the split is ever questioned.</dd>
+        <dt>When the three disagree</dt>
+        <dd>That is informative, not a fault. Lots of time open with no activity and no
+            edits means a tab was left running. Edits with no time open usually means our
+            watcher was offline while they worked, and the edits are still valid.</dd>
+        <dt>Is anything missing?</dt>
+        <dd>Edits are recorded retroactively and go back to the day the document was
+            created. Presence is only recorded while the watcher is running, so any gap in
+            the banner above is a gap in the presence numbers, never in the edit numbers.</dd>
+      </dl>
+    </details>
+  </section>
+
+  <footer>
+    <span id="updated">&nbsp;</span>
+    <span>All times shown in Toronto time.</span>
+  </footer>
+</div>
+
+<script>
+const PALETTE = ["#2563eb","#dc2626","#059669","#d97706","#7c3aed","#0891b2","#be123c","#4d7c0f"];
+const colorOf = (() => { const m = new Map();
+  return n => { if (!m.has(n)) m.set(n, PALETTE[m.size % PALETTE.length]); return m.get(n); }; })();
+
+const TZ = "America/Toronto";
+const fmtTime = new Intl.DateTimeFormat("en-CA",
+  { timeZone: TZ, hour: "numeric", minute: "2-digit", hour12: true });
+const fmtDate = new Intl.DateTimeFormat("en-CA",
+  { timeZone: TZ, month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
+
+function dur(s) {
+  s = Math.round(s || 0);
+  if (s < 60) return s > 0 ? "under a minute" : "—";
+  // Carry into hours before splitting. Rounding the remainder independently
+  // lets 59.5 minutes round up to "60m", so 1:59:59 rendered as "1h 60m".
+  const mins = Math.floor(s / 60);
+  const h = Math.floor(mins / 60), m = mins % 60;
+  if (!h) return m + "m";
+  return h + "h " + String(m).padStart(2, "0") + "m";
+}
+function initials(name) {
+  const parts = String(name).replace(/^people\//, "#").split(/[\s._-]+/).filter(Boolean);
+  if (!parts.length) return "?";
+  return ((parts[0][0] || "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+}
+function ago(iso) {
+  if (!iso) return "never";
+  const mins = (Date.now() - new Date(iso)) / 60000;
+  if (mins < 1) return "just now";
+  if (mins < 60) return Math.round(mins) + " min ago";
+  if (mins < 48 * 60) return Math.round(mins / 60) + " hr ago";
+  return Math.round(mins / 1440) + " days ago";
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function render(d) {
+  document.getElementById("doctitle").textContent = d.doc.title;
+  const link = document.getElementById("doclink");
+  if (d.doc.url) link.href = d.doc.url; else link.style.display = "none";
+
+  /* --- status pill --- */
+  const pill = document.getElementById("status"), txt = document.getElementById("statustext");
+  pill.className = "pill " + (d.health.watcher_ok ? "ok" : "down");
+  txt.textContent = d.health.watcher_ok ? "Live" : "Watcher offline";
+
+  /* --- notices --- */
+  const notes = [];
+  if (!d.health.has_presence_data) {
+    notes.push(["No live tracking yet",
+      "Edit history is being collected, but nobody's arrival and departure times are being" +
+      " recorded because the watcher has never run. Start it with <code>python presence_watcher.py</code>."]);
+  } else if (d.health.watcher_error) {
+    // A stated reason beats "paused", which leaves a reader unable to tell a
+    // crash from a Google session that simply needs signing in again.
+    notes.push(["Live tracking has stopped",
+      esc(d.health.watcher_error.message) +
+      (d.health.watcher_error.since ? " This started " + ago(d.health.watcher_error.since) + "." : "") +
+      " Edit history below is unaffected and still complete."]);
+  } else if (!d.health.watcher_ok) {
+    const seen = d.health.watcher_heartbeat || d.health.watcher_last;
+    notes.push(["Live tracking is paused",
+      "The watcher last checked in " + ago(seen) + ", so nobody will show as present until" +
+      " it is running again. Edit history below is still complete and accurate."]);
+  } else if (d.health.disconnected_now) {
+    notes.push(["Lost connection to the document",
+      "The tracker's own connection to Google dropped " + ago(d.health.last_disconnect) +
+      ", so it cannot currently see who is in the document. It reconnects on its own within" +
+      " a minute or two. Nobody is shown as present while this lasts, because the list on" +
+      " screen would be frozen at whoever happened to be there when it dropped." +
+      " Edit history below is unaffected."]);
+  }
+  if (!d.health.poller_ok) {
+    notes.push(["Edit history may be behind",
+      "The activity poller last ran " + ago(d.health.poller_last) + ". Recent edits might" +
+      " not appear yet."]);
+  }
+  if (d.flags && d.flags.overflow) {
+    notes.push(["Some people may be hidden",
+      "Google collapsed part of the collaborator list into a &ldquo;+N&rdquo; badge " +
+      d.flags.overflow + " times, which hides those names. Widening the browser window in the" +
+      " watcher's settings fixes it."]);
+  }
+  document.getElementById("notice").innerHTML = notes.map(([t, b]) =>
+    `<div class="notice"><div><b>${t}</b><p>${b}</p></div></div>`).join("");
+
+  /* --- right now --- */
+  const live = d.people.filter(p => p.live);
+  document.getElementById("now").innerHTML = live.length ? live.map(p => `
+    <div class="who">
+      <div class="av" style="background:${colorOf(p.person)}">${esc(initials(p.person))}</div>
+      <div><div class="nm">${esc(p.person)}</div>
+      <div class="sub">Here since ${fmtTime.format(new Date(p.live_since))}</div></div>
+    </div>`).join("")
+    : `<div class="empty">${d.health.watcher_ok
+        ? "Nobody has the document open at the moment."
+        : "Cannot tell — live tracking is not running."}</div>`;
+
+  /* --- stats --- */
+  const totalActive = d.people.reduce((a, p) => a + p.active_s, 0);
+  const totalEdits = d.people.reduce((a, p) => a + p.edit_events, 0);
+  const words = d.words.length ? d.words[d.words.length - 1].words : null;
+  document.getElementById("stats").innerHTML = [
+    ["People seen", d.people.length],
+    ["Active time, everyone", dur(totalActive)],
+    ["Edits recorded", totalEdits.toLocaleString()],
+    ["Words in document", words === null ? "—" : words.toLocaleString()],
+  ].map(([k, v]) => `<div class="stat"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+
+  /* --- table --- */
+  const maxActive = Math.max(1, ...d.people.map(p => p.active_s));
+  document.getElementById("rows").innerHTML = d.people.map(p => `
+    <tr>
+      <td><div class="person">
+        <div class="av" style="background:${colorOf(p.person)}">${esc(initials(p.person))}</div>
+        <div><div class="nm">${esc(p.person)}${p.live ? '<span class="tag">HERE NOW</span>' : ""}</div>
+        ${p.email ? `<div class="em">${esc(p.email)}</div>` : ""}</div>
+      </div></td>
+      <td class="num">${dur(p.present_s)}</td>
+      <td class="num">${dur(p.active_s)}
+        <div class="bar"><i style="width:${(p.active_s / maxActive * 100).toFixed(1)}%;
+          background:${colorOf(p.person)}"></i></div></td>
+      <td class="num">${p.visits}</td>
+      <td class="num">${p.edit_events.toLocaleString()}</td>
+      <td class="num">${p.last ? fmtDate.format(new Date(p.last)) : "—"}</td>
+    </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted)">No activity recorded yet.</td></tr>`;
+
+  /* --- timeline --- */
+  const tl = document.getElementById("timeline");
+  if (!d.timeline.length) {
+    tl.innerHTML = `<div class="empty" style="border:0">Nothing to plot yet.</div>`;
+  } else {
+    const t0 = Math.min(...d.timeline.map(s => +new Date(s.start)));
+    const t1 = Math.max(...d.timeline.map(s => +new Date(s.end)));
+    const span = Math.max(t1 - t0, 1);
+    const byPerson = new Map();
+    d.timeline.forEach(s => {
+      if (!byPerson.has(s.person)) byPerson.set(s.person, []);
+      byPerson.get(s.person).push(s);
+    });
+    tl.innerHTML = [...byPerson].map(([person, spans]) => `
+      <div class="tlrow">
+        <div class="tlname" title="${esc(person)}">${esc(person)}</div>
+        <div class="track">${spans.map(s => {
+          const l = (+new Date(s.start) - t0) / span * 100;
+          const w = Math.max((+new Date(s.end) - +new Date(s.start)) / span * 100, 0.4);
+          return `<div class="span ${s.kind}" title="${esc(person)} — ${s.kind} — ${
+            fmtDate.format(new Date(s.start))}" style="left:${l}%;width:${w}%;
+            background:${colorOf(person)}"></div>`;
+        }).join("")}</div>
+      </div>`).join("")
+      + `<div class="axis"><span>${fmtDate.format(new Date(t0))}</span>
+         <span>${fmtDate.format(new Date(t1))}</span></div>
+         <div class="legend"><span><i class="sw p"></i>Document open</span>
+         <span><i class="sw"></i>Editing</span></div>`;
+  }
+
+  renderLog(d.events || []);
+
+  document.getElementById("updated").textContent =
+    "Updated " + fmtTime.format(new Date(d.generated_at)) + " · refreshes automatically";
+}
+
+/* Plain-sentence phrasing. Someone reading this should not have to know what a
+   "presence event" is, or that a watcher process exists. */
+const fmtDay = new Intl.DateTimeFormat("en-CA",
+  { timeZone: TZ, weekday: "long", month: "long", day: "numeric" });
+
+function dayLabel(dt) {
+  const now = new Date();
+  const key = x => fmtDay.format(x);
+  if (key(dt) === key(now)) return "Today";
+  const y = new Date(now); y.setDate(y.getDate() - 1);
+  if (key(dt) === key(y)) return "Yesterday";
+  return fmtDay.format(dt);
+}
+
+function describe(ev) {
+  const who = ev.person ? `<b>${esc(ev.person)}</b>` : "Someone";
+  switch (ev.event) {
+    case "join":         return [`${who} opened the document`, "in"];
+    // Both are the same fact: Google stopped listing them, so to everyone else
+    // in the document they are gone. Whether the tab was shut, the browser put
+    // it to sleep or the connection timed out is not observable, so the log
+    // does not pretend to know -- it just notes when they had been idle first.
+    case "leave":        return [`${who} left the document`, "out"];
+    case "leave_idle":   return [`${who} left the document`
+                                 + `<span class="hint">&middot; idle for a while beforehand</span>`, "out"];
+    case "watcher_start":  return ["Live tracking started", "sys"];
+    case "watcher_stop":   return ["Live tracking stopped", "sys"];
+    case "watcher_restart":return ["Live tracking restarted (brief gap of a few seconds)", "sys"];
+    case "disconnected": return ["Briefly lost connection to the document", "sys"];
+    case "overflow":     return ["Google hid some names behind a &ldquo;+N&rdquo; badge", "sys"];
+    default:             return [esc(ev.event), "sys"];
+  }
+}
+
+function renderLog(events) {
+  const el = document.getElementById("log");
+  if (!events.length) {
+    el.innerHTML = `<div class="empty" style="border:0">
+      Nothing recorded yet. Arrivals and departures will appear here once someone
+      opens the document while tracking is running.</div>`;
+    return;
+  }
+  let html = "", lastDay = null;
+  for (const ev of events) {
+    const dt = new Date(ev.ts);
+    const day = dayLabel(dt);
+    if (day !== lastDay) { html += `<div class="daysep">${day}</div>`; lastDay = day; }
+    const [msg, kind] = describe(ev);
+    const badge = kind === "sys"
+      ? `<div class="icon">&#9881;</div>`
+      : `<div class="av" style="background:${colorOf(ev.person || "?")}">${esc(initials(ev.person || "?"))}</div>`;
+    let mark = "";
+    if (kind === "in")  mark = `<span class="arrow-in">&rarr;</span> `;
+    if (kind === "out") mark = `<span class="arrow-out">&larr;</span> `;
+    if (kind === "idle") mark = `<span class="arrow-idle">&#9203;</span> `;
+    html += `<div class="entry ${kind === "sys" ? "sys" : ""}">
+        ${badge}
+        <div class="msg">${mark}${msg}</div>
+        <div class="when">${fmtTime.format(dt)}<small>${ago(ev.ts)}</small></div>
+      </div>`;
+  }
+  el.innerHTML = html;
+}
+
+let loadedBuild = null;
+
+async function tick() {
+  try {
+    const r = await fetch("/api/summary", { cache: "no-store" });
+    if (r.status === 401) { location.href = "/login"; return; }
+    const data = await r.json();
+
+    // This tab polls for data but never re-runs its own script, so after a
+    // deploy it would keep rendering fresh data with stale code. Pick the new
+    // page up instead of quietly showing something half-broken.
+    if (loadedBuild === null) {
+      loadedBuild = data.build;
+    } else if (data.build !== loadedBuild) {
+      location.reload();
+      return;
+    }
+    render(data);
+  } catch (e) {
+    const pill = document.getElementById("status");
+    pill.className = "pill down";
+    document.getElementById("statustext").textContent = "Reconnecting";
+  }
+}
+tick();
+setInterval(tick, 10000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+</script>
+</body>
+</html>
