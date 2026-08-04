@@ -1,5 +1,16 @@
 # Coauthor
 
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Playwright](https://img.shields.io/badge/Playwright-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![AWS](https://img.shields.io/badge/AWS-EC2%20·%20SSM%20·%20S3-232F3E?logo=amazonwebservices&logoColor=white)](https://aws.amazon.com/)
+[![Caddy](https://img.shields.io/badge/Caddy-auto--TLS-1F88C0?logo=caddy&logoColor=white)](https://caddyserver.com/)
+![systemd](https://img.shields.io/badge/systemd-units%20·%20timers-30D475?logo=linux&logoColor=white)
+![Access](https://img.shields.io/badge/access-SSM%20only%2C%20no%20SSH-FF9900?logo=amazonwebservices&logoColor=white)
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+
 **Who actually worked on the group document, and when.**
 
 Google Docs shows you *that* a document changed. It does not readily tell you who
@@ -318,6 +329,27 @@ defensible:
 - **Automated browser sessions get invalidated.** A tracking account driven from
   a datacenter IP should be expected to need periodic re-authentication. The
   dashboard says when this has happened rather than showing stale presence.
+
+## Scope, and a note on terms
+
+The two halves sit differently with Google, and it is worth being straight about
+that rather than leaving it implied.
+
+**Edit history uses official, documented APIs** — Drive and Drive Activity, with
+read-only scopes, through a normal OAuth client or service account. Entirely
+sanctioned, and it is the stronger evidence of the two.
+
+**Presence has no API.** Google exposes collaborator state only to a browser
+connected to the document, so the watcher automates a real signed-in Chromium.
+That sits awkwardly against the clause in Google's Terms of Service about
+accessing services "using the interface and instructions we provide". Enforcement
+in practice is account-level rather than legal — sign-in challenges, invalidated
+sessions, and in one case during development an account flagged outright.
+
+Practical reading: use a dedicated tracking account you would not mind losing,
+expect to re-authenticate it periodically, and do not point this at documents you
+have no legitimate access to. The dashboard degrades honestly when the presence
+half is blocked, precisely because that half is expected to break.
 
 ## Privacy
 
