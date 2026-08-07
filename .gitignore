@@ -45,3 +45,6 @@ __pycache__/
 venv/
 .venv/
 *.egg-info/
+
+# Retired credentials kept for reference; never publishable.
+*.deleted-key
